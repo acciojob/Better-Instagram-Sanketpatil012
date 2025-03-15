@@ -1,37 +1,58 @@
-//your code here
-document.addEventListener("DOMContentLoaded", () => {
-    const images = document.querySelectorAll(".image");
+let arr = ['div1' , 'div2' , 'div3' , 'div4' , 'div5' , 'div6']
+const imageList= document.querySelectorAll('.image')
+ let k=0; 
+  for(let imageSection of imageList)
+	 {
+          imageSection.id= arr[k]
+		  k++
 
-    let draggedElement = null;
+		 imageSection.addEventListener( 'dragstart' , (e)=>{
+			   let div= e.target
+			   div.style.opacity='0.5'
+			   e.dataTransfer.setData('text' , div.id)
+			 
+		 })
 
-    images.forEach((image) => {
-        // Make the element draggable
-        image.addEventListener("dragstart", (event) => {
-            draggedElement = event.target;
-            event.dataTransfer.setData("text/plain", event.target.id);
-            event.target.classList.add("selected");
-        });
+		 imageSection.addEventListener( 'dragend' , (e)=>{
+			   let div=e.target 
+			   div.style.opacity='1'
+		 })
+	 
+	 }
+  let  allEvents = [  'dragover'   , 'dragenter' ,'drop']
 
-        // Remove selection on drag end
-        image.addEventListener("dragend", () => {
-            draggedElement.classList.remove("selected");
-        });
+ for(let  events of allEvents){
 
-        // Prevent default behavior to allow dropping
-        image.addEventListener("dragover", (event) => {
-            event.preventDefault();
-        });
+    for(let imageSection of imageList){
 
-        // Handle drop event
-        image.addEventListener("drop", (event) => {
-            event.preventDefault();
-            
-            if (draggedElement && draggedElement !== event.target) {
-                // Swap background images
-                let tempBg = draggedElement.style.backgroundImage;
-                draggedElement.style.backgroundImage = event.target.style.backgroundImage;
-                event.target.style.backgroundImage = tempBg;
-            }
-        });
-    });
-});
+	   imageSection.addEventListener(events , (e)=>{
+            e.preventDefault()
+		   if(events === 'drop'){
+                 let drag1= e.dataTransfer.getData('text')
+                 let dragElement= document.getElementById(drag1) 
+			     let drag2 = imageSection.id 
+			     imageSection.id= drag1
+			     dragElement.id=drag2
+
+			     let text1= dragElement.innerText
+			     let text2=  imageSection.id
+			     dragElement.innerText=text1
+			      imageSection.id=text2
+			     
+		   }
+
+		   
+	   })
+  
+
+		
+	}
+	 
+ }
+
+
+
+
+
+
+
